@@ -4,6 +4,7 @@ class DateSetterTest < MiniTest::Unit::TestCase
 
   def setup
     @date_setter = DateSetter.new
+    @date_setter.range = 0.days
   end
 
   def test_is_invalid_when_reference_date_is_smaller_than_min
@@ -91,5 +92,14 @@ class DateSetterTest < MiniTest::Unit::TestCase
     @date_setter.reference_date = @date_setter.max_date = 2.days.from_now
 
     assert @date_setter.valid?
+  end
+
+  def test_schould_always_return_result_which_is_between_max_and_min
+    @date_setter.reference_date = 2.days.from_now
+    @date_setter.min_date = @date_setter.reference_date - 1.hour
+    @date_setter.max_date = @date_setter.reference_date + 1.hour
+    @date_setter.range = 5.days
+
+    assert (@date_setter.min_date..@date_setter.max_date).cover?(@date_setter.result)
   end
 end
