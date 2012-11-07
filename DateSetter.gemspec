@@ -13,4 +13,6 @@ Gem::Specification.new do |gem|
   gem.name          = "DateSetter"
   gem.require_paths = ["lib"]
   gem.version       = DateSetter::VERSION
+
+  gem.add_development_dependency("activesupport")
 end
