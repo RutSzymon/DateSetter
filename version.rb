@@ -1,1 +1,3 @@
-DateSetter::VERSION = "0.0.1"
+class DateSetter
+  VERSION = "0.0.1"
+end
