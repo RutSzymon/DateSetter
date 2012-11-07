@@ -1,5 +1,3 @@
-require "DateSetter/version"
-
-module DateSetter
+class DateSetter
   # Your code goes here...
 end
