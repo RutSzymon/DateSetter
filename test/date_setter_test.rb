@@ -110,4 +110,10 @@ class DateSetterTest < MiniTest::Unit::TestCase
 
     assert (8..9).cover?(@date_setter.result.hour)
   end
+
+  def test_set_function_should_generate_correct_date
+    set_date_time = DateSetter.set(0.days.ago, 0.days)
+
+    assert_equal Date.today, set_date_time.to_date
+  end
 end
