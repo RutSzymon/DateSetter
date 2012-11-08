@@ -3,7 +3,7 @@ class DateSetter
   attr_accessor :reference_date, :min_date, :max_date, :result, :range, :min_hour, :max_hour
 
   def valid?
-    return unless reference_date || range || !valid_ranges?
+    return if !reference_date || !range || !valid_ranges?
     (min_date.to_f..max_date.to_f).cover?(reference_date.to_f)
   end
 
@@ -33,7 +33,7 @@ class DateSetter
 
   private
   def valid_ranges?
-    min_date.to_f < max_date.to_f || min_hour.to_f < max_hour.to_f
+    min_date.to_f <= max_date.to_f || min_hour.to_f <= max_hour.to_f
   end
 
   def min_date_in_range
