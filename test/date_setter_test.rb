@@ -94,7 +94,7 @@ class DateSetterTest < MiniTest::Unit::TestCase
     assert @date_setter.valid?
   end
 
-  def test_schould_always_return_result_which_is_between_max_and_min
+  def test_should_always_return_result_which_is_between_max_and_min
     @date_setter.reference_date = 2.days.from_now
     @date_setter.min_date = @date_setter.reference_date - 1.hour
     @date_setter.max_date = @date_setter.reference_date + 1.hour
