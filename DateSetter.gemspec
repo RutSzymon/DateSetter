@@ -4,7 +4,7 @@ require File.expand_path('../version', __FILE__)
 Gem::Specification.new do |gem|
   gem.authors       = ["Szymon Rut"]
   gem.email         = ["rut.szymon@gmail.com"]
-  gem.description   = %q{It sets a random date in given range}
+  gem.summary       = %q{It sets a random date in given range}
   gem.homepage      = "https://github.com/RutSzymon/DateSetter"
 
   gem.files         = `git ls-files`.split($\)
