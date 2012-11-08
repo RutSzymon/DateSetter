@@ -15,7 +15,7 @@ class DateSetter
 
   def valid?
     return if !reference_date || !range || !valid_ranges?
-    (min_date.to_f..max_date.to_f).cover?(reference_date.to_f)
+    (min_date.to_f..max_date.to_f).cover?(reference_date.to_datetime.to_f)
   end
 
   def invalid?
@@ -23,11 +23,11 @@ class DateSetter
   end
 
   def min_date
-    @min_date ||= -Infinity
+    @min_date.try(:to_datetime) || -Infinity
   end
 
   def max_date
-    @max_date ||= Infinity
+    @max_date.try(:to_datetime) || Infinity
   end
 
   def result

@@ -116,4 +116,13 @@ class DateSetterTest < MiniTest::Unit::TestCase
 
     assert_equal Date.today, set_date_time.to_date
   end
+
+  def test_is_valid_not_only_with_date_time
+    @date_setter.reference_date = Date.today
+    @date_setter.range = 4.days
+    @date_setter.min_date = Date.yesterday
+    @date_setter.max_date = Date.tomorrow
+
+    assert @date_setter.valid?
+  end
 end
