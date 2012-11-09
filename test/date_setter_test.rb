@@ -104,9 +104,9 @@ class DateSetterTest < MiniTest::Unit::TestCase
     assert (0.days.ago.at_midnight..1.days.from_now.at_midnight).cover?(@date_setter.result)
   end
 
-  def test_should_always_return_result_which_is_between_min_hour_and_max_hour
-    @date_setter.min_hour = 8.hours
-    @date_setter.max_hour = 9.hours
+  def test_should_always_return_result_which_is_between_start_of_day_and_end_of_day
+    @date_setter.start_of_day = 8.hours
+    @date_setter.end_of_day = 9.hours
 
     assert (8..9).cover?(@date_setter.result.hour)
   end

@@ -1,6 +1,6 @@
 class DateSetter
   Infinity = 1.0 / 0.0
-  attr_accessor :reference_date, :min_date, :max_date, :result, :range, :min_hour, :max_hour
+  attr_accessor :reference_date, :min_date, :max_date, :result, :range, :start_of_day, :end_of_day
 
   def initialize(options = {})
     options.each do |key, value|
@@ -35,20 +35,20 @@ class DateSetter
   end
 
   def result
-    rand(min_date_in_range..max_date_in_range) + rand(min_hour..max_hour) if valid?
+    rand(min_date_in_range..max_date_in_range) + rand(start_of_day..end_of_day) if valid?
   end
 
-  def min_hour
-    @min_hour ||= 0.hours
+  def start_of_day
+    @start_of_day ||= 0.hours
   end
 
-  def max_hour
-    @max_hour ||= 24.hours - 1.second
+  def end_of_day
+    @end_of_day ||= 24.hours - 1.second
   end
 
   private
   def valid_ranges?
-    min_date.to_f <= max_date.to_f || min_hour.to_f <= max_hour.to_f
+    min_date.to_f <= max_date.to_f || start_of_day.to_f <= end_of_day.to_f
   end
 
   def min_date_in_range
