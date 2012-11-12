@@ -132,4 +132,8 @@ class DateSetterTest < MiniTest::Unit::TestCase
 
     assert @date_setter.valid?
   end
+
+  def test_intersection_method_should_return_common_part_of_two_ranges
+    assert_equal (11..11), @date_setter.intersection((10..11),(11..20))
+  end
 end

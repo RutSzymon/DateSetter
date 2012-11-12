@@ -46,6 +46,11 @@ class DateSetter
     @end_of_day ||= 24.hours - 1.second
   end
 
+  def intersection(first_range, second_range)
+    return nil if (first_range.max < second_range.begin or second_range.max < first_range.begin)
+    [first_range.begin, second_range.begin].max..[first_range.max, second_range.max].min
+  end
+
   private
   def valid_ranges?
     min_date.to_f <= max_date.to_f || start_of_day.to_f <= end_of_day.to_f
