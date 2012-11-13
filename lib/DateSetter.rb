@@ -31,11 +31,11 @@ class DateSetter
   end
 
   def min_date
-    @min_date.try(:to_datetime) || min_date_range
+    @min_date.try(:to_datetime) || min_date_range - 1.second
   end
 
   def max_date
-    @max_date.try(:to_datetime) || max_date_range
+    @max_date.try(:to_datetime) || max_date_range + 1.second
   end
 
   def result
@@ -45,7 +45,7 @@ class DateSetter
       elsif result_day == min_date_in_range
         result_day + hours_range_when_min_date
       elsif result_day == max_date_in_range
-        result_day + hours_range_when_max_date
+        result_day + rand(hours_range_when_max_date)
       else
         result_day + rand(start_of_day..end_of_day)
       end
@@ -80,7 +80,7 @@ class DateSetter
   end
 
   def hours_range_when_max_date
-    (max_date.hour.hours..end_of_day)
+    (start_of_day..max_date.hour.hours)
   end
 
   def the_same_day?
