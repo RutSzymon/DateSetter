@@ -83,7 +83,7 @@ class DateSetter
     min_date_in_range == max_date_in_range
   end
 
-  #private
+  private
   def valid_ranges?
     min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && intersection_of_range_and_hours_range != nil
   end
