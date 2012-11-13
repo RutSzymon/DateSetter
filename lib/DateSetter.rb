@@ -15,11 +15,7 @@ class DateSetter
 
   def valid?
     return if !reference_date || !range || !valid_ranges?
-    if !@min_date && !@max_date && range == 0.seconds
-      true
-    else
-      (min_date.to_f..max_date.to_f).cover?(reference_date.to_f)
-    end
+    (min_date.to_f..max_date.to_f).cover?(reference_date.to_f)
   end
 
   def invalid?
