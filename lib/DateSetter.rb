@@ -14,7 +14,7 @@ class DateSetter
   end
 
   def valid?
-    return if !reference_date || !range || !valid_ranges?
+    return false if !reference_date || !range || !valid_ranges?
     (min_date.to_f..max_date.to_f).cover?(reference_date.to_f)
   end
 
@@ -71,6 +71,10 @@ class DateSetter
     intersection((min_date.hour.hours..max_date.hour.hours), (start_of_day..end_of_day))
   end
 
+  def intersection_of_range_and_hours_range
+    intersection((min_date_range.hour.hours..max_date_range.hour.hours), (start_of_day..end_of_day))
+  end
+
   def hours_range_when_min_date
     (min_date.hour.hours..end_of_day)
   end
@@ -85,7 +89,7 @@ class DateSetter
 
   private
   def valid_ranges?
-    min_date.to_f <= max_date.to_f || start_of_day.to_f <= end_of_day.to_f
+    min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && intersection_of_range_and_hours_range != nil
   end
 
   def min_date_in_range
