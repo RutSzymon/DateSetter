@@ -43,7 +43,7 @@ class DateSetter
       if the_same_day?
         min_date_in_range + rand(hours_range_when_the_same_day)
       elsif result_day == min_date_in_range
-        result_day + hours_range_when_min_date
+        result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
         result_day + rand(hours_range_when_max_date)
       else
