@@ -62,6 +62,14 @@ class DateSetter
     @end_of_day ||= 24.hours - 1.second
   end
 
+  def max_date_time_hour
+    if max_date_time_in_range.hour > 0
+      max_date_time_in_range.hour.hours
+    else
+      24.hours - 1.second
+    end
+  end
+
   def intersection(first_range, second_range)
     return nil if (first_range.max < second_range.begin or second_range.max < first_range.begin)
     [first_range.begin, second_range.begin].max..[first_range.max, second_range.max].min
@@ -76,7 +84,7 @@ class DateSetter
   end
 
   def hours_range_when_max_date
-    (start_of_day..max_date_time_in_range.hour.hours)
+    (start_of_day..max_date_time_hour)
   end
 
   def the_same_day?
