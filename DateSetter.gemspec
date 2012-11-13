@@ -15,4 +15,5 @@ Gem::Specification.new do |gem|
   gem.version       = DateSetter::VERSION
 
   gem.add_development_dependency("activesupport")
+  gem.add_development_dependency("mocha")
 end
