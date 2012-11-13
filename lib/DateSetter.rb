@@ -37,7 +37,7 @@ class DateSetter
   def result
     if valid?
       if the_same_day?
-        min_date_in_range + rand(hours_range_when_the_same_day)
+        min_date_in_range + rand(intersection_of_range_and_hours_range)
       elsif result_day == min_date_in_range
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
@@ -67,45 +67,49 @@ class DateSetter
     [first_range.begin, second_range.begin].max..[first_range.max, second_range.max].min
   end
 
-  def hours_range_when_the_same_day
-    intersection((min_date.hour.hours..max_date.hour.hours), (start_of_day..end_of_day))
-  end
-
   def intersection_of_range_and_hours_range
-    intersection((min_date_range.hour.hours..max_date_range.hour.hours), (start_of_day..end_of_day))
+    intersection((min_date_time_in_range.hour.hours..max_date_time_in_range.hour.hours), (start_of_day..end_of_day))
   end
 
   def hours_range_when_min_date
-    (min_date.hour.hours..end_of_day)
+    (min_date_time_in_range.hour.hours..end_of_day)
   end
 
   def hours_range_when_max_date
-    (start_of_day..max_date.hour.hours)
+    (start_of_day..max_date_time_in_range.hour.hours)
   end
 
   def the_same_day?
     min_date_in_range == max_date_in_range
   end
 
-  private
+  #private
   def valid_ranges?
     min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && intersection_of_range_and_hours_range != nil
   end
 
-  def min_date_in_range
+  def min_date_time_in_range
     if (min_date_range).to_f < min_date.to_f
-      min_date.to_date
+      min_date
     else
-      (min_date_range).to_date
+      min_date_range
+    end
+  end
+
+  def min_date_in_range
+    min_date_time_in_range.to_date
+  end
+
+  def max_date_time_in_range
+    if (max_date_range).to_f > max_date.to_f
+      max_date
+    else
+      max_date_range
     end
   end
 
   def max_date_in_range
-    if (max_date_range).to_f > max_date.to_f
-      max_date.to_date
-    else
-      (max_date_range).to_date
-    end
+    max_date_time_in_range.to_date
   end
 
   def min_date_range
