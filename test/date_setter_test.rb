@@ -134,6 +134,53 @@ class DateSetterTest < MiniTest::Unit::TestCase
   end
 
   def test_intersection_method_should_return_common_part_of_two_ranges
-    assert_equal (11..11), @date_setter.intersection((10..11),(11..20))
+    assert_equal (11..11), @date_setter.intersection((10..11), (11..20))
+  end
+
+  def test_result_should_be_between_min_date_and_max_date_hours_when_this_is_the_same_day
+    @date_setter.reference_date = Date.today + 10.hours
+    @date_setter.range = 1.day
+    @date_setter.min_date = Date.today + 9.hours
+    @date_setter.max_date = Date.today + 11.hours
+    @date_setter.start_of_day = 11.hours
+    @date_setter.end_of_day = 14.hours
+
+    assert (9..11).cover?(@date_setter.result.hour)
+  end
+
+  def test_result_should_be_between_min_date_and_end_of_day_hours_when_result_day_is_min_date
+    @date_setter.reference_date = Date.today + 10.hours
+    @date_setter.range = 5.days
+    @date_setter.min_date = Date.yesterday + 9.hours
+    @date_setter.max_date = Date.tomorrow + 11.hours
+    @date_setter.start_of_day = 7.hours
+    @date_setter.end_of_day = 14.hours
+    @date_setter.stubs(:result_day).returns(@date_setter.min_date.to_date)
+
+    assert (9..14).cover?(@date_setter.result.hour)
+  end
+
+  def test_result_should_be_between_start_of_day_and_max_date_hours_when_result_day_is_max_date
+    @date_setter.reference_date = Date.today + 10.hours
+    @date_setter.range = 5.days
+    @date_setter.min_date = Date.yesterday + 9.hours
+    @date_setter.max_date = Date.tomorrow + 11.hours
+    @date_setter.start_of_day = 7.hours
+    @date_setter.end_of_day = 14.hours
+    @date_setter.stubs(:result_day).returns(@date_setter.max_date.to_date)
+
+    assert (7..11).cover?(@date_setter.result.hour)
+  end
+
+  def test_result_should_be_between_start_of_day_and_end_of_day_hours_when_result_day_is_other_than_min_or_max_date
+    @date_setter.reference_date = Date.today + 10.hours
+    @date_setter.range = 5.days
+    @date_setter.min_date = Date.yesterday + 9.hours
+    @date_setter.max_date = Date.tomorrow + 11.hours
+    @date_setter.start_of_day = 7.hours
+    @date_setter.end_of_day = 14.hours
+    @date_setter.stubs(:result_day).returns(@date_setter.reference_date.to_date)
+
+    assert (7..14).cover?(@date_setter.result.hour)
   end
 end

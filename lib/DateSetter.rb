@@ -27,15 +27,31 @@ class DateSetter
   end
 
   def min_date
-    @min_date.try(:to_datetime) || -Infinity
+    @min_date.try(:to_datetime) || min_date_range
   end
 
   def max_date
-    @max_date.try(:to_datetime) || Infinity
+    @max_date.try(:to_datetime) || max_date_range
   end
 
   def result
-    rand(min_date_in_range..max_date_in_range) + rand(start_of_day..end_of_day) if valid?
+    if valid?
+      if the_same_day?
+        min_date_in_range + rand(hours_range_when_the_same_day)
+      elsif result_day == min_date_in_range
+        result_day + hours_range_when_min_date
+      elsif result_day == max_date_in_range
+        result_day + hours_range_when_max_date
+      else
+        result_day + rand(start_of_day..end_of_day)
+      end
+    else
+      raise ArgumentError, "Some argument is invalid"
+    end
+  end
+
+  def result_day
+    rand(min_date_in_range..max_date_in_range)
   end
 
   def start_of_day
@@ -51,24 +67,48 @@ class DateSetter
     [first_range.begin, second_range.begin].max..[first_range.max, second_range.max].min
   end
 
+  def hours_range_when_the_same_day
+    intersection((min_date.hour.hours..max_date.hour.hours), (start_of_day..end_of_day))
+  end
+
+  def hours_range_when_min_date
+    (min_date.hour.hours..end_of_day)
+  end
+
+  def hours_range_when_max_date
+    (max_date.hour.hours..end_of_day)
+  end
+
+  def the_same_day?
+    min_date_in_range == max_date_in_range
+  end
+
   private
   def valid_ranges?
     min_date.to_f <= max_date.to_f || start_of_day.to_f <= end_of_day.to_f
   end
 
   def min_date_in_range
-    if (reference_date - range).to_f < min_date.to_f
+    if (min_date_range).to_f < min_date.to_f
       min_date.to_date
     else
-      (reference_date - range).to_date
+      (min_date_range).to_date
     end
   end
 
   def max_date_in_range
-    if (reference_date + range).to_f > max_date.to_f
+    if (max_date_range).to_f > max_date.to_f
       max_date.to_date
     else
-      (reference_date + range).to_date
+      (max_date_range).to_date
     end
+  end
+
+  def min_date_range
+    reference_date - range
+  end
+
+  def max_date_range
+    reference_date + range
   end
 end
