@@ -85,7 +85,12 @@ class DateSetter
 
   private
   def valid_ranges?
-    min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && intersection_of_range_and_hours_range != nil
+    min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && valid_hours_range
+  end
+
+  def valid_hours_range
+    return true if !the_same_day?
+    intersection_of_range_and_hours_range != nil
   end
 
   def min_date_time_in_range

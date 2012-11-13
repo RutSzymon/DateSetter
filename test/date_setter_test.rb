@@ -188,4 +188,16 @@ class DateSetterTest < MiniTest::Unit::TestCase
 
     assert (7..14).cover?(@date_setter.result.hour)
   end
+
+  def test_hours_range_is_always_valid_when_is_at_least_day_difference
+    date = Date.today.at_beginning_of_week + 2.days - 3.weeks - 4.months
+    @date_setter.reference_date = date
+    @date_setter.range = 1.day
+    @date_setter.min_date = date
+    @date_setter.max_date = DateTime.now
+    @date_setter.start_of_day = 8.hours
+    @date_setter.end_of_day = 20.hours
+
+    @date_setter.valid?
+  end
 end
