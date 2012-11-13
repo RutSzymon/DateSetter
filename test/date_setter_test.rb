@@ -113,11 +113,14 @@ class DateSetterTest < MiniTest::Unit::TestCase
     end
   end
 
-  def test_should_always_return_result_which_is_between_start_of_day_and_end_of_day
+  def test_should_return_exception_when_hours_range_is_incorrect
+    @date_setter.reference_date = Date.today + 10.hours
     @date_setter.start_of_day = 8.hours
     @date_setter.end_of_day = 9.hours
 
-    assert (8..9).cover?(@date_setter.result.hour)
+    assert_raises ArgumentError do
+      @date_setter.result
+    end
   end
 
   def test_set_function_should_generate_correct_date
