@@ -1,3 +1,5 @@
+require "debugger"
+
 class DateSetter
   Infinity = 1.0 / 0.0
   attr_accessor :reference_date, :min_date, :max_date, :result, :range, :start_of_day, :end_of_day
@@ -46,6 +48,7 @@ class DateSetter
         result_day + rand(start_of_day..end_of_day)
       end
     else
+      debugger
       raise ArgumentError, "Some argument is invalid"
     end
   end
