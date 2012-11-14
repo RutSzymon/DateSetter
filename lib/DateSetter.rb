@@ -65,9 +65,17 @@ class DateSetter
     @end_of_day ||= 24.hours - 1.second
   end
 
+  def min_date_time_hour
+    if min_date_time_in_range.hour > 0
+      min_date_time_in_range.hour.hours + min_date_time_in_range.min.minutes + min_date_time_in_range.sec.seconds
+    else
+      0.hours
+    end
+  end
+
   def max_date_time_hour
     if max_date_time_in_range.hour > 0
-      max_date_time_in_range.hour.hours
+      max_date_time_in_range.hour.hours + max_date_time_in_range.min.minutes + max_date_time_in_range.sec.seconds
     else
       24.hours - 1.second
     end
@@ -83,7 +91,7 @@ class DateSetter
   end
 
   def hours_range_when_min_date
-    (min_date_time_in_range.hour.hours..end_of_day)
+    (min_date_time_hour..end_of_day)
   end
 
   def hours_range_when_max_date
