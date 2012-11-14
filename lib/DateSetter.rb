@@ -43,7 +43,6 @@ class DateSetter
       elsif result_day == min_date_in_range
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
-        debugger
         result_day + rand(hours_range_when_max_date)
       else
         result_day + rand(start_of_day..end_of_day)
@@ -67,11 +66,7 @@ class DateSetter
   end
 
   def min_date_time_hour
-    if min_date_time_in_range.hour > 0
-      min_date_time_in_range.hour.hours + min_date_time_in_range.min.minutes + min_date_time_in_range.sec.seconds
-    else
-      0.hours
-    end
+    min_date_time_in_range.hour.hours + min_date_time_in_range.min.minutes + min_date_time_in_range.sec.seconds
   end
 
   def max_date_time_hour
