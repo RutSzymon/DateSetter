@@ -88,7 +88,7 @@ class DateSetter
   end
 
   def intersection_of_range_and_hours_range
-    intersection((min_date_time_in_range.hour.hours..max_date_time_in_range.hour.hours), (start_of_day..end_of_day))
+    intersection((min_date_time_hour..max_date_time_hour), (start_of_day..end_of_day))
   end
 
   def hours_range_when_min_date
