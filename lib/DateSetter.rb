@@ -41,6 +41,7 @@ class DateSetter
       if the_same_day?
         min_date_in_range + rand(intersection_of_range_and_hours_range)
       elsif result_day == min_date_in_range
+        debugger if min_date_time_hour > end_of_day
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
         debugger if start_of_day > max_date_time_hour
