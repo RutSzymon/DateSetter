@@ -43,9 +43,8 @@ class DateSetter
       elsif result_day == min_date_in_range
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
-        @d = (hours_range_when_max_date)
-        puts @d
-        result_day + rand(@d)
+        debugger if start_of_day > max_date_time_hour
+        result_day + rand(hours_range_when_max_date)
       else
         result_day + rand(start_of_day..end_of_day)
       end
