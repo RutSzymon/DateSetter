@@ -91,7 +91,9 @@ class DateSetter
   end
 
   def hours_range_when_max_date
-    (start_of_day..max_date_time_hour)
+    @d = (start_of_day..max_date_time_hour)
+    puts @d
+    @d
   end
 
   def the_same_day?
