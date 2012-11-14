@@ -43,12 +43,13 @@ class DateSetter
       elsif result_day == min_date_in_range
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
-        result_day + rand(hours_range_when_max_date)
+        @d = (hours_range_when_max_date)
+        puts @d
+        result_day + rand(@d)
       else
         result_day + rand(start_of_day..end_of_day)
       end
     else
-      debugger
       raise ArgumentError, "Some argument is invalid"
     end
   end
@@ -91,9 +92,7 @@ class DateSetter
   end
 
   def hours_range_when_max_date
-    @d = (start_of_day..max_date_time_hour)
-    puts @d
-    @d
+    (start_of_day..max_date_time_hour)
   end
 
   def the_same_day?
