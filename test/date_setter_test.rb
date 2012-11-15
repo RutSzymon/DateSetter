@@ -198,6 +198,19 @@ class DateSetterTest < MiniTest::Unit::TestCase
     @date_setter.start_of_day = 8.hours
     @date_setter.end_of_day = 20.hours
 
-    @date_setter.valid?
+    assert @date_setter.valid?
+  end
+
+  def test_3_seconds_precision
+    @date_setter.reference_date = Date.today
+    @date_setter.range = 500.days
+    @date_setter.min_date = Date.today - 1.second
+    @date_setter.max_date = Date.today + 1.second
+
+    assert (@date_setter.min_date..@date_setter.max_date).cover?(@date_setter.result)
+  end
+
+  def test_3_seconds_precision_with_set_method
+    assert (Date.today - 1.second..Date.today + 1.second).cover?(DateSetter.set(Date.today, 500.days, min_date: Date.today - 1.second, max_date: Date.today + 1.second))
   end
 end

@@ -25,15 +25,23 @@ class DateSetter
   end
 
   def reference_date
-    @reference_date.try(:to_datetime)
+    @reference_date.is_a?(Date) ? @reference_date.at_beginning_of_day : @reference_date
   end
 
   def min_date
-    @min_date.try(:to_datetime) || min_date_range - 1.second
+    if @min_date.is_a?(Date)
+      @min_date.at_beginning_of_day
+    else
+      @min_date || min_date_range - 1.second
+    end
   end
 
   def max_date
-    @max_date.try(:to_datetime) || max_date_range + 1.second
+    if @max_date.is_a?(Date)
+      @max_date.at_beginning_of_day
+    else
+      @max_date || max_date_range + 1.second
+    end
   end
 
   def result
@@ -116,7 +124,7 @@ class DateSetter
   end
 
   def min_date_time_hour
-    valid_min_date_time_in_range.hour.hours + valid_min_date_time_in_range.min.minutes + valid_min_date_time_in_range.sec.seconds
+    (valid_min_date_time_in_range.to_i - valid_min_date_time_in_range.at_beginning_of_day.to_i).seconds
   end
 
   def min_date_in_range
@@ -140,8 +148,8 @@ class DateSetter
   end
 
   def max_date_time_hour
-    if valid_max_date_time_in_range.hour > 0
-      valid_max_date_time_in_range.hour.hours + valid_max_date_time_in_range.min.minutes + valid_max_date_time_in_range.sec.seconds
+    if valid_max_date_time_in_range.to_i - valid_max_date_time_in_range.at_beginning_of_day.to_i > 0
+      (valid_max_date_time_in_range.to_i - valid_max_date_time_in_range.at_beginning_of_day.to_i).seconds
     else
       24.hours - 1.second
     end
