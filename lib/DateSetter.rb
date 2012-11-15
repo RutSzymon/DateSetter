@@ -41,10 +41,8 @@ class DateSetter
       if the_same_day?
         min_date_in_range + rand(intersection_of_range_and_hours_range)
       elsif result_day == min_date_in_range
-        debugger if min_date_time_hour > end_of_day
         result_day + rand(hours_range_when_min_date)
       elsif result_day == max_date_in_range
-        debugger if start_of_day > max_date_time_hour
         result_day + rand(hours_range_when_max_date)
       else
         result_day + rand(start_of_day..end_of_day)
@@ -55,7 +53,7 @@ class DateSetter
   end
 
   def result_day
-    rand(min_date_in_range..max_date_in_range)
+    @result_day ||= rand(min_date_in_range..max_date_in_range)
   end
 
   def start_of_day
@@ -64,18 +62,6 @@ class DateSetter
 
   def end_of_day
     @end_of_day ||= 24.hours - 1.second
-  end
-
-  def min_date_time_hour
-    min_date_time_in_range.hour.hours + min_date_time_in_range.min.minutes + min_date_time_in_range.sec.seconds
-  end
-
-  def max_date_time_hour
-    if max_date_time_in_range.hour > 0
-      max_date_time_in_range.hour.hours + max_date_time_in_range.min.minutes + max_date_time_in_range.sec.seconds
-    else
-      24.hours - 1.second
-    end
   end
 
   def intersection(first_range, second_range)
@@ -95,13 +81,17 @@ class DateSetter
     (start_of_day..max_date_time_hour)
   end
 
+  # private
+  def valid_ranges?
+    min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && valid_hours_range && hours_range_in_range?
+  end
+
   def the_same_day?
     min_date_in_range == max_date_in_range
   end
 
-  private
-  def valid_ranges?
-    min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && valid_hours_range
+  def hours_range_in_range?
+    intersection((min_date_range..max_date_range), (reference_date.to_date + start_of_day..reference_date.to_date + end_of_day)) != nil
   end
 
   def valid_hours_range
@@ -117,8 +107,20 @@ class DateSetter
     end
   end
 
+  def valid_min_date_time_in_range
+    if min_date_time_in_range > min_date_time_in_range.to_date + end_of_day
+      min_date_time_in_range.to_date + 1.day + start_of_day
+    else
+      min_date_time_in_range
+    end
+  end
+
+  def min_date_time_hour
+    valid_min_date_time_in_range.hour.hours + valid_min_date_time_in_range.min.minutes + valid_min_date_time_in_range.sec.seconds
+  end
+
   def min_date_in_range
-    min_date_time_in_range.to_date
+    valid_min_date_time_in_range.to_date
   end
 
   def max_date_time_in_range
@@ -129,8 +131,24 @@ class DateSetter
     end
   end
 
+  def valid_max_date_time_in_range
+    if max_date_time_in_range < max_date_time_in_range.to_date + start_of_day
+      max_date_time_in_range.to_date - 1.day + end_of_day
+    else
+      max_date_time_in_range
+    end
+  end
+
+  def max_date_time_hour
+    if valid_max_date_time_in_range.hour > 0
+      valid_max_date_time_in_range.hour.hours + valid_max_date_time_in_range.min.minutes + valid_max_date_time_in_range.sec.seconds
+    else
+      24.hours - 1.second
+    end
+  end
+
   def max_date_in_range
-    max_date_time_in_range.to_date
+    valid_max_date_time_in_range.to_date
   end
 
   def min_date_range
