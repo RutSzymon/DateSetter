@@ -1,5 +1,3 @@
-require "debugger"
-
 class DateSetter
   Infinity = 1.0 / 0.0
   attr_accessor :reference_date, :min_date, :max_date, :result, :range, :start_of_day, :end_of_day
@@ -56,7 +54,7 @@ class DateSetter
         result_day + rand(start_of_day..end_of_day)
       end
     else
-      raise ArgumentError, "Some argument is invalid"
+      exception
     end
   end
 
@@ -89,7 +87,7 @@ class DateSetter
     (start_of_day..max_date_time_hour)
   end
 
-  # private
+  private
   def valid_ranges?
     min_date.to_f <= max_date.to_f && start_of_day.to_f <= end_of_day.to_f && valid_hours_range && hours_range_in_range?
   end
@@ -165,5 +163,15 @@ class DateSetter
 
   def max_date_range
     reference_date + range
+  end
+
+  def exception
+    raise ArgumentError, "Some argument is invalid \n
+                          reference_date: #{reference_date} \n
+                          range: #{range} \n
+                          min_date: #{min_date} \n
+                          max_date: #{max_date} \n
+                          start_of_day: #{start_of_day} \n
+                          end_of_day: #{end_of_day}"
   end
 end
