@@ -167,11 +167,11 @@ class DateSetter
 
   def exception
     raise ArgumentError, "Some argument is invalid \n
-                          reference_date: #{reference_date} \n
-                          range: #{range} \n
-                          min_date: #{min_date} \n
-                          max_date: #{max_date} \n
-                          start_of_day: #{start_of_day} \n
-                          end_of_day: #{end_of_day}"
+                          reference_date: #{reference_date.inspect} \n
+                          range: #{range.inspect} \n
+                          min_date: #{min_date.inspect} \n
+                          max_date: #{max_date.inspect} \n
+                          start_of_day: #{start_of_day.inspect} \n
+                          end_of_day: #{end_of_day.inspect}"
   end
 end
